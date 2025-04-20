@@ -26,6 +26,7 @@ class GoogleSheetsConnector():
         self.RANGE_NAME = None
         self._service = None
         self._sheet = None
+        self.connected = False
         self._authenticate()
 
     def _authenticate(self):
@@ -41,6 +42,7 @@ class GoogleSheetsConnector():
             with open('token.json', 'w') as token:
                 token.write(self.creds.to_json())
         self._service = build('sheets', 'v4', credentials=self.creds)  # Przenieś inicjalizację service tutaj
+        self.connected = True
         self._sheet = self._service.spreadsheets() # Przenieś inicjalizację sheet tutaj
                 
     def read_data_from_sheet(self, range_name: str):
@@ -81,20 +83,37 @@ async def get_transactions_and_categorize(
     
     for row in values:
         try:
-            spend = row[0]
+            spend = row[0] # usuń 'zł' z row[0]
+            spend = spend.replace('zł', '').replace(' ', '').replace(',', '.')
+            spend = -float(spend)
             earn = row[1]
+            earn = earn.replace('zł', '').replace(' ', '').replace(',', '.')
+            earn = float(earn)
             category = row[2]
             description = row[3]
             transactions.append(
                 TransactionData(
-                    description=row[2],
-                    amount=(row[1]),
-                    transaction_data = row[2],
+                    description=row[3],
+                    amount= row[0] if spend else row[1],
+                    category=row[2],
                 )
             )
         except IndexError as e:
             print(f"Error processing row {row}: {e}")
             continue
+    
+    prediction = []
+    for transaction in transactions:
+        prediction.append(
+            PredictionResult(
+                description=transaction.description,
+                prediction_category='',
+                gt = transaction.category,
+            )
+        )
+    return prediction
+
+
                 
     
                 
