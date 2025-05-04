@@ -108,8 +108,3 @@ class PredictionResult(BaseModel):
     description: str
     prediction_category: str
     
-
-
-                
-    
-                
