@@ -6,8 +6,8 @@ An intelligent spending manager application that uses AI to help track, analyze,
 
 ## Features
 
-- Gets spendings saved in Google Sheet via Google Cloude API
-- Atatches one category from category config file to transaction using fastText
+- Gets spendings saved in Google Sheet via Google Cloud API - requires private access to your own sheets.
+- Attaches one category from category config file to transaction using fastText
 
 ## Installation
 
@@ -17,19 +17,18 @@ cd spending_AI_manager
 pip install -r requirements.txt
 ```
 
-## Usage
+It is recommended to create a virtual environment.
 
-```bash
-python app.py
-```
+## How does it work
+
+Application is connecting to a private Google Sheet file via Google Cloud API. There you can copy credentials and paste them to the credentials.json file.
+After connection, there are downloaded two types of information - amount of spending or income and description.
+Application gets description and predicts the closest category from category_config.json file. For example "Train to Berlin" should be connected with "Transport" category.
 
 ## Technologies
 
 - Python
-- Machine Learning algorithms
-- Data visualization tools
-- Database management systems
+- Google Cloud API
+- fastText model
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+For more information feel free to contact with me!

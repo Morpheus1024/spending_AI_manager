@@ -96,6 +96,7 @@ class GoogleSheetsConnector():
         
     
 def get_google_sheet_connector() -> GoogleSheetsConnector:
+    
     return GoogleSheetsConnector()
     
 class TransactionData(BaseModel):
